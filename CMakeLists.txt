@@ -96,12 +96,6 @@ file(GLOB_RECURSE format_src
 
 # Exclude files from build directory to ensure they're not passed to the formatter
 list(FILTER format_src EXCLUDE REGEX "${CMAKE_CURRENT_BINARY_DIR}.")
-# Exclude generated files from formatting
-list(FILTER format_src EXCLUDE REGEX "${CMAKE_PROJECT_DIR}/include/.")
-list(FILTER format_src EXCLUDE REGEX "${CMAKE_PROJECT_DIR}/source/loader/.")
-list(FILTER format_src EXCLUDE REGEX "${CMAKE_PROJECT_DIR}/source/ur_api.cpp")
-list(FILTER format_src EXCLUDE REGEX "${CMAKE_PROJECT_DIR}/source/drivers/null/ur_nullddi.cpp")
-list(FILTER format_src EXCLUDE REGEX "${CMAKE_PROJECT_DIR}/source/drivers/null/ur_null.h")
 
 # Add code formatter target
 add_custom_target(cppformat)
@@ -170,6 +164,7 @@ add_custom_target(generate
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/scripts
     COMMAND ${Python3_EXECUTABLE} run.py --api-json ${API_JSON_FILE}
     COMMAND ${Python3_EXECUTABLE} json2src.py --api-json ${API_JSON_FILE} ${PROJECT_SOURCE_DIR}
+    COMMAND cmake --build ${PROJECT_BINARY_DIR} --target cppformat
 )
 
 # Generate source and check for uncommitted diffs
