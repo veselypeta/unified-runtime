@@ -274,6 +274,18 @@ class ur_device_init_flags_t(c_int):
 
 
 ###############################################################################
+## @brief Extension name maximum length.
+UR_MAX_EXTENSION_NAME_LENGTH = 256
+
+###############################################################################
+## @brief Extension type.
+class ur_platform_extension_t(Structure):
+    _fields_ = [
+        ("name", c_char_p),                                             ## [in] null-terminated extension name.
+        ("version", c_ulong)                                            ## [in] version of the extension using ::UR_MAKE_VERSION.
+    ]
+
+###############################################################################
 ## @brief Supported platform info
 class ur_platform_info_v(IntEnum):
     NAME = 1                                        ## [char[]] The string denoting name of the platform. The size of the
@@ -282,8 +294,9 @@ class ur_platform_info_v(IntEnum):
                                                     ## size of the info needs to be dynamically queried.
     VERSION = 3                                     ## [char[]] The string denoting the version of the platform. The size of
                                                     ## the info needs to be dynamically queried.
-    EXTENSIONS = 4                                  ## [char[]] The string denoting extensions supported by the platform. The
-                                                    ## size of the info needs to be dynamically queried.
+    EXTENSIONS = 4                                  ## [::ur_platform_extension_t[]] an array of ::ur_platform_extension_t
+                                                    ## which express which extensions supported by the platform. 
+                                                    ## The size of the info needs to be dynamically queried.
     PROFILE = 5                                     ## [char[]] The string denoting profile of the platform. The size of the
                                                     ## info needs to be dynamically queried.
     BACKEND = 6                                     ## [::ur_platform_backend_t] The backend of the platform. Identifies the

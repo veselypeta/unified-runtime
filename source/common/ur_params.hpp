@@ -129,6 +129,8 @@ inline std::ostream &operator<<(std::ostream &os,
 inline std::ostream &operator<<(std::ostream &os,
                                 enum ur_device_init_flag_t value);
 inline std::ostream &operator<<(std::ostream &os,
+                                const struct ur_platform_extension_t params);
+inline std::ostream &operator<<(std::ostream &os,
                                 enum ur_platform_info_t value);
 inline std::ostream &operator<<(std::ostream &os, enum ur_api_version_t value);
 inline std::ostream &operator<<(std::ostream &os,
@@ -936,6 +938,22 @@ inline void serializeFlag_ur_device_init_flags_t(std::ostream &os,
 }
 } // namespace ur_params
 inline std::ostream &operator<<(std::ostream &os,
+                                const struct ur_platform_extension_t params) {
+    os << "(struct ur_platform_extension_t){";
+
+    os << ".name = ";
+
+    ur_params::serializePtr(os, (params.name));
+
+    os << ", ";
+    os << ".version = ";
+
+    os << (params.version);
+
+    os << "}";
+    return os;
+}
+inline std::ostream &operator<<(std::ostream &os,
                                 enum ur_platform_info_t value) {
     switch (value) {
 
@@ -1000,8 +1018,18 @@ serializeTaggedTyped_ur_platform_info_t(std::ostream &os, const void *ptr,
 
     case UR_PLATFORM_INFO_EXTENSIONS: {
 
-        const char *tptr = (const char *)ptr;
-        serializePtr(os, tptr);
+        const ur_platform_extension_t *tptr =
+            (const ur_platform_extension_t *)ptr;
+        os << "[";
+        size_t nelems = size / sizeof(ur_platform_extension_t);
+        for (size_t i = 0; i < nelems; ++i) {
+            if (i != 0) {
+                os << ", ";
+            }
+
+            os << tptr[i];
+        }
+        os << "]";
     } break;
 
     case UR_PLATFORM_INFO_PROFILE: {

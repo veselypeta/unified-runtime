@@ -10,6 +10,24 @@ type: header
 desc: "Intel $OneApi Unified Runtime APIs for Platform"
 ordinal: "1"
 --- #--------------------------------------------------------------------------
+type: macro
+desc: "Extension name maximum length."
+name: $X_MAX_EXTENSION_NAME_LENGTH
+value: "256"
+--- #--------------------------------------------------------------------------
+type: struct
+desc: "Extension type."
+name: $x_platform_extension_t
+class: $xPlatform
+members:
+    # TODO - this should be char[], but haven't got it to work with generator yet
+    - type: char*
+      name: name
+      desc: "[in] null-terminated extension name."
+    - type: uint32_t
+      name: version
+      desc: "[in] version of the extension using $X_MAKE_VERSION."
+--- #--------------------------------------------------------------------------
 type: function
 desc: "Retrieves all available platforms"
 class: $xPlatform
@@ -57,7 +75,9 @@ etors:
       desc: "[char[]] The string denoting the version of the platform. The size of the info needs to be dynamically queried."
     - name: EXTENSIONS
       value: "4"
-      desc: "[char[]] The string denoting extensions supported by the platform. The size of the info needs to be dynamically queried."
+      desc: |
+            [$x_platform_extension_t[]] an array of $x_platform_extension_t which express which extensions supported by the platform. 
+            The size of the info needs to be dynamically queried.
       todo: "document extensions names and their meaning"
     - name: PROFILE
       value: "5"

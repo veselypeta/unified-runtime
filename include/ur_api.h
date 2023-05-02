@@ -360,6 +360,20 @@ urTearDown(
 #pragma region platform
 #endif
 ///////////////////////////////////////////////////////////////////////////////
+#ifndef UR_MAX_EXTENSION_NAME_LENGTH
+/// @brief Extension name maximum length.
+#define UR_MAX_EXTENSION_NAME_LENGTH 256
+#endif // UR_MAX_EXTENSION_NAME_LENGTH
+
+///////////////////////////////////////////////////////////////////////////////
+/// @brief Extension type.
+typedef struct ur_platform_extension_t {
+    char *name;       ///< [in] null-terminated extension name.
+    uint32_t version; ///< [in] version of the extension using ::UR_MAKE_VERSION.
+
+} ur_platform_extension_t;
+
+///////////////////////////////////////////////////////////////////////////////
 /// @brief Retrieves all available platforms
 ///
 /// @details
@@ -398,8 +412,9 @@ typedef enum ur_platform_info_t {
                                       ///< size of the info needs to be dynamically queried.
     UR_PLATFORM_INFO_VERSION = 3,     ///< [char[]] The string denoting the version of the platform. The size of
                                       ///< the info needs to be dynamically queried.
-    UR_PLATFORM_INFO_EXTENSIONS = 4,  ///< [char[]] The string denoting extensions supported by the platform. The
-                                      ///< size of the info needs to be dynamically queried.
+    UR_PLATFORM_INFO_EXTENSIONS = 4,  ///< [::ur_platform_extension_t[]] an array of ::ur_platform_extension_t
+                                      ///< which express which extensions supported by the platform.
+                                      ///< The size of the info needs to be dynamically queried.
     UR_PLATFORM_INFO_PROFILE = 5,     ///< [char[]] The string denoting profile of the platform. The size of the
                                       ///< info needs to be dynamically queried.
     UR_PLATFORM_INFO_BACKEND = 6,     ///< [::ur_platform_backend_t] The backend of the platform. Identifies the
