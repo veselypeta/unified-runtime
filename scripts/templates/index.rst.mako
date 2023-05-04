@@ -13,5 +13,4 @@
 
    core/INTRO.rst
    core/PROG.rst
-   core/EXT.rst
    api.rst

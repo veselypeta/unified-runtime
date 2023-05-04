@@ -5,6 +5,5 @@ add_conformance_test(platform
     urInit.cpp
     urPlatformGet.cpp
     urPlatformGetBackendOption.cpp
-    # urPlatformGetExtensionProperties.cpp
     urPlatformGetInfo.cpp
     urTearDown.cpp)
